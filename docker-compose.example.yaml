@@ -1,0 +1,32 @@
+services:
+    postgres:
+        image: postgres
+        env_file: .env
+        volumes:
+            - "postgres_data:/var/lib/postgres"
+
+    calendso:
+        build:
+            context: calendso
+        env_file: .env
+        #volumes:
+        #    - "prisma_schema:/app/prisma"
+        ports:
+            - "3000:3000"
+        depends_on:
+            - postgres
+
+    prisma:
+        build:
+            context: prisma
+        env_file: .env
+        #volumes:
+        #    - "prisma_schema:/app/prisma:ro"
+        ports:
+            - "5555:5555"
+        depends_on:
+            - postgres
+
+volumes:
+    #prisma_schema:
+    postgres_data:
